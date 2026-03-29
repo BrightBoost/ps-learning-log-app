@@ -8,6 +8,13 @@ let entries: Entry[] = seedData.map((item) => ({
 }));
 
 export function createEntry(data: Omit<Entry, "id">): Entry {
+  if (
+    data.confidenceRating !== undefined &&
+    data.confidenceRating !== null &&
+    (data.confidenceRating < 1 || data.confidenceRating > 5)
+  ) {
+    throw new Error("Confidence rating must be between 1 and 5.");
+  }
   const entry: Entry = {
     id: uuidv4(),
     ...data,
@@ -28,6 +35,13 @@ export function updateEntry(
   id: string,
   data: Partial<Omit<Entry, "id">>,
 ): Entry | undefined {
+  if (
+    data.confidenceRating !== undefined &&
+    data.confidenceRating !== null &&
+    (data.confidenceRating < 1 || data.confidenceRating > 5)
+  ) {
+    throw new Error("Confidence rating must be between 1 and 5.");
+  }
   const index = entries.findIndex((entry) => entry.id === id);
   if (index === -1) return undefined;
 

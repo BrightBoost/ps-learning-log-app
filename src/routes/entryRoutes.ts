@@ -11,21 +11,26 @@ const router = Router();
 
 // POST /entries
 router.post("/", (req: Request, res: Response) => {
-  const { title, topic, date, notes } = req.body;
+  try {
+    const { title, topic, date, notes, confidenceRating } = req.body;
 
-  if (!title || !topic) {
-    res.status(400).json({ error: "title and topic are required" });
-    return;
+    if (!title || !topic) {
+      res.status(400).json({ error: "title and topic are required" });
+      return;
+    }
+
+    const entry = createEntry({
+      title,
+      topic,
+      date: date ? new Date(date) : new Date(),
+      notes,
+      confidenceRating,
+    });
+
+    res.status(201).json(entry);
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
   }
-
-  const entry = createEntry({
-    title,
-    topic,
-    date: date ? new Date(date) : new Date(),
-    notes,
-  });
-
-  res.status(201).json(entry);
 });
 
 // GET /entries
@@ -48,21 +53,26 @@ router.get("/:id", (req: Request, res: Response) => {
 
 // PUT /entries/:id
 router.put("/:id", (req: Request, res: Response) => {
-  const { title, topic, date, notes } = req.body;
+  try {
+    const { title, topic, date, notes, confidenceRating } = req.body;
 
-  const updated = updateEntry(req.params.id, {
-    ...(title && { title }),
-    ...(topic && { topic }),
-    ...(date && { date: new Date(date) }),
-    ...(notes !== undefined && { notes }),
-  });
+    const updated = updateEntry(req.params.id, {
+      ...(title && { title }),
+      ...(topic && { topic }),
+      ...(date && { date: new Date(date) }),
+      ...(notes !== undefined && { notes }),
+      ...(confidenceRating !== undefined && { confidenceRating }),
+    });
 
-  if (!updated) {
-    res.status(404).json({ error: "Entry not found" });
-    return;
+    if (!updated) {
+      res.status(404).json({ error: "Entry not found" });
+      return;
+    }
+
+    res.json(updated);
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
   }
-
-  res.json(updated);
 });
 
 // DELETE /entries/:id

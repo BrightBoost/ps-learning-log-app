@@ -4,33 +4,38 @@
         "title": "Getting Started with TypeScript",
         "topic": "TypeScript",
         "date": "2026-03-15T10:00:00.000Z",
-        "notes": "Learned about basic types, interfaces, and type inference."
+        "notes": "Learned about basic types, interfaces, and type inference.",
+        "confidenceRating": 4
     },
     {
         "id": "seed-2",
         "title": "Express Routing Fundamentals",
         "topic": "Express",
         "date": "2026-03-18T14:30:00.000Z",
-        "notes": "Covered route parameters, query strings, and middleware."
+        "notes": "Covered route parameters, query strings, and middleware.",
+        "confidenceRating": 5
     },
     {
         "id": "seed-3",
         "title": "REST API Design Principles",
         "topic": "API Design",
-        "date": "2026-03-20T09:00:00.000Z"
+        "date": "2026-03-20T09:00:00.000Z",
+        "confidenceRating": null
     },
     {
         "id": "seed-4",
         "title": "Unit Testing with Jest",
         "topic": "Testing",
         "date": "2026-03-22T11:00:00.000Z",
-        "notes": "Practiced writing test suites, using matchers, and mocking dependencies."
+        "notes": "Practiced writing test suites, using matchers, and mocking dependencies.",
+        "confidenceRating": 3
     },
     {
         "id": "seed-5",
         "title": "Node.js Event Loop Deep Dive",
         "topic": "Node.js",
         "date": "2026-03-25T16:00:00.000Z",
-        "notes": "Explored how the event loop handles async operations under the hood."
+        "notes": "Explored how the event loop handles async operations under the hood.",
+        "confidenceRating": 5
     }
 ]

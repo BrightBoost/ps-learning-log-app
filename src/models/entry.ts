@@ -4,4 +4,5 @@ export interface Entry {
   topic: string;
   date: Date;
   notes?: string;
+  confidenceRating?: number | null;
 }
