@@ -2,6 +2,8 @@ import {
   createEntry,
   updateEntry,
   getEntryById,
+  addAhaMoment,
+  getAhaMoments,
   resetEntries,
 } from "./entryService";
 import { Entry } from "../models/entry";
@@ -69,7 +71,7 @@ describe("Entry Service", () => {
         confidenceRating: 0,
       };
       expect(() => createEntry(entryData)).toThrow(
-        "Confidence rating must be between 1 and 5."
+        "Confidence rating must be between 1 and 5.",
       );
     });
 
@@ -82,7 +84,7 @@ describe("Entry Service", () => {
         confidenceRating: 6,
       };
       expect(() => createEntry(entryData)).toThrow(
-        "Confidence rating must be between 1 and 5."
+        "Confidence rating must be between 1 and 5.",
       );
     });
 
@@ -126,14 +128,14 @@ describe("Entry Service", () => {
     it("should throw an error when updating with a confidence rating less than 1", () => {
       const updatedData = { confidenceRating: 0 };
       expect(() => updateEntry(testEntry.id, updatedData)).toThrow(
-        "Confidence rating must be between 1 and 5."
+        "Confidence rating must be between 1 and 5.",
       );
     });
 
     it("should throw an error when updating with a confidence rating greater than 5", () => {
       const updatedData = { confidenceRating: 6 };
       expect(() => updateEntry(testEntry.id, updatedData)).toThrow(
-        "Confidence rating must be between 1 and 5."
+        "Confidence rating must be between 1 and 5.",
       );
     });
 
@@ -141,6 +143,36 @@ describe("Entry Service", () => {
       const updatedData = { confidenceRating: 4.5 };
       const updatedEntry = updateEntry(testEntry.id, updatedData);
       expect(updatedEntry?.confidenceRating).toBe(4.5);
+    });
+  });
+
+  describe("aha moments", () => {
+    let testEntry: Entry;
+
+    beforeEach(() => {
+      testEntry = createEntry({
+        title: "Aha Entry",
+        topic: "Testing",
+        date: new Date(),
+        notes: "A note",
+      });
+    });
+
+    it("should add an aha moment and return the full entry", () => {
+      const result = addAhaMoment(testEntry.id, "Now I understand mocks");
+      expect(result).toMatchObject({
+        id: testEntry.id,
+        ahaMoments: [{ moment: "Now I understand mocks" }],
+      });
+    });
+
+    it("should get aha moments wrapped in a moments object", () => {
+      addAhaMoment(testEntry.id, "Jest setup clicked");
+      const result = getAhaMoments(testEntry.id);
+
+      expect(result).toEqual({
+        moments: [expect.objectContaining({ moment: "Jest setup clicked" })],
+      });
     });
   });
 });

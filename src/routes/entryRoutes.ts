@@ -5,6 +5,8 @@ import {
   getEntryById,
   updateEntry,
   deleteEntry,
+  addAhaMoment,
+  getAhaMoments,
 } from "../services/entryService";
 
 const router = Router();
@@ -49,6 +51,37 @@ router.get("/:id", (req: Request, res: Response) => {
   }
 
   res.json(entry);
+});
+
+// POST /entries/:id/aha-moments
+router.post("/:id/aha-moments", (req: Request, res: Response) => {
+  const { moment } = req.body;
+
+  if (!moment || typeof moment !== "string") {
+    res.status(400).json({ error: "moment is required" });
+    return;
+  }
+
+  const ahaMoments = addAhaMoment(req.params.id, moment);
+
+  if (!ahaMoments) {
+    res.status(404).json({ error: "Entry not found" });
+    return;
+  }
+
+  res.status(201).json(ahaMoments);
+});
+
+// GET /entries/:id/aha-moments
+router.get("/:id/aha-moments", (req: Request, res: Response) => {
+  const ahaMoments = getAhaMoments(req.params.id);
+
+  if (!ahaMoments) {
+    res.status(404).json({ error: "Entry not found" });
+    return;
+  }
+
+  res.json(ahaMoments);
 });
 
 // PUT /entries/:id

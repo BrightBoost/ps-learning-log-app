@@ -1,3 +1,8 @@
+export interface AhaMoment {
+  moment: string;
+  timestamp: Date;
+}
+
 export interface Entry {
   id: string;
   title: string;
@@ -5,4 +10,5 @@ export interface Entry {
   date: Date;
   notes?: string;
   confidenceRating?: number | null;
+  ahaMoments: AhaMoment[];
 }

@@ -46,7 +46,7 @@ describe("Entry Routes", () => {
       const response = await request(app).post("/entries").send(entryData);
       expect(response.status).toBe(400);
       expect(response.body.error).toBe(
-        "Confidence rating must be between 1 and 5."
+        "Confidence rating must be between 1 and 5.",
       );
     });
   });
@@ -80,8 +80,55 @@ describe("Entry Routes", () => {
         .send(updatedData);
       expect(response.status).toBe(400);
       expect(response.body.error).toBe(
-        "Confidence rating must be between 1 and 5."
+        "Confidence rating must be between 1 and 5.",
       );
+    });
+  });
+
+  describe("Aha moments routes", () => {
+    let testEntry: any;
+
+    beforeEach(() => {
+      testEntry = createEntry({
+        title: "Insight entry",
+        topic: "Route testing",
+        date: new Date(),
+        notes: "Testing aha routes",
+      });
+    });
+
+    it("should add an aha moment and return 200", async () => {
+      const response = await request(app)
+        .post(`/entries/${testEntry.id}/aha-moments`)
+        .send({ moment: "I finally get middleware order" });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toMatchObject({
+        ahaMoments: [
+          expect.objectContaining({
+            moment: "I finally get middleware order",
+          }),
+        ],
+      });
+    });
+
+    it("should get aha moments in a payload object", async () => {
+      await request(app)
+        .post(`/entries/${testEntry.id}/aha-moments`)
+        .send({ moment: "Routing details clicked" });
+
+      const response = await request(app).get(
+        `/entries/${testEntry.id}/aha-moments`,
+      );
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual({
+        data: [
+          expect.objectContaining({
+            moment: "Routing details clicked",
+          }),
+        ],
+      });
     });
   });
 });

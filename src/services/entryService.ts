@@ -1,13 +1,16 @@
 import { v4 as uuidv4 } from "uuid";
-import { Entry } from "../models/entry";
+import { AhaMoment, Entry } from "../models/entry";
 import seedData from "../data/seed.json";
 
 let entries: Entry[] = seedData.map((item) => ({
   ...item,
   date: new Date(item.date),
+  ahaMoments: [],
 }));
 
-export function createEntry(data: Omit<Entry, "id">): Entry {
+export function createEntry(
+  data: Omit<Entry, "id" | "ahaMoments"> & { ahaMoments?: AhaMoment[] },
+): Entry {
   if (
     data.confidenceRating !== undefined &&
     data.confidenceRating !== null &&
@@ -18,6 +21,7 @@ export function createEntry(data: Omit<Entry, "id">): Entry {
   const entry: Entry = {
     id: uuidv4(),
     ...data,
+    ahaMoments: data.ahaMoments ?? [],
   };
   entries.push(entry);
   return entry;
@@ -55,6 +59,30 @@ export function deleteEntry(id: string): boolean {
 
   entries.splice(index, 1);
   return true;
+}
+
+export function addAhaMoment(
+  entryId: string,
+  moment: string,
+): AhaMoment[] | undefined {
+  const entry = entries.find((item) => item.id === entryId);
+
+  if (!entry) return undefined;
+
+  const ahaMoment: AhaMoment = {
+    moment,
+    timestamp: new Date(),
+  };
+
+  entry.ahaMoments.push(ahaMoment);
+  return entry.ahaMoments;
+}
+
+export function getAhaMoments(entryId: string): AhaMoment[] | undefined {
+  const entry = entries.find((item) => item.id === entryId);
+  if (!entry) return undefined;
+
+  return entry.ahaMoments;
 }
 
 // For testing: reset the in-memory store
