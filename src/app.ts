@@ -1,4 +1,4 @@
-import express from "express";
+import express from "expres";
 import entryRoutes from "./routes/entryRoutes";
 
 const app = express();
