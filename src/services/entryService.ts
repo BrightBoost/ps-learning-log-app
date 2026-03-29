@@ -11,7 +11,7 @@ export function createEntry(data: Omit<Entry, "id">): Entry {
   if (
     data.confidenceRating !== undefined &&
     data.confidenceRating !== null &&
-    (data.confidenceRating < 1 || data.confidenceRating < 5)
+    (data.confidenceRating < 1 || data.confidenceRating > 5)
   ) {
     throw new Error("Confidence rating must be between 1 and 5.");
   }

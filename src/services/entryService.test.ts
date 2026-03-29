@@ -24,6 +24,18 @@ describe("Entry Service", () => {
       expect(entry.confidenceRating).toBe(3);
     });
 
+    it("should create an entry with a confidence rating of 4", () => {
+      const entryData = {
+        title: "Test Title",
+        topic: "Test Topic",
+        date: new Date(),
+        notes: "Test notes",
+        confidenceRating: 4,
+      };
+      const entry = createEntry(entryData);
+      expect(entry.confidenceRating).toBe(4);
+    });
+
     it("should create an entry with the minimum valid confidence rating", () => {
       const entryData = {
         title: "Test Title",
