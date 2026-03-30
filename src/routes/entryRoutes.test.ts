@@ -102,7 +102,7 @@ describe("Entry Routes", () => {
         .post(`/entries/${testEntry.id}/aha-moments`)
         .send({ moment: "I finally get middleware order" });
 
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(201);
       expect(response.body).toMatchObject({
         ahaMoments: [
           expect.objectContaining({

@@ -8,16 +8,16 @@ let entries: Entry[] = seedData.map((item) => ({
   ahaMoments: [],
 }));
 
+function validateConfidenceRating(rating: number | undefined | null) {
+  if (rating !== undefined && rating !== null && (rating < 1 || rating > 5)) {
+    throw new Error("Confidence rating must be between 1 and 5.");
+  }
+}
+
 export function createEntry(
   data: Omit<Entry, "id" | "ahaMoments"> & { ahaMoments?: AhaMoment[] },
 ): Entry {
-  if (
-    data.confidenceRating !== undefined &&
-    data.confidenceRating !== null &&
-    (data.confidenceRating < 1 || data.confidenceRating > 5)
-  ) {
-    throw new Error("Confidence rating must be between 1 and 5.");
-  }
+  validateConfidenceRating(data.confidenceRating);
   const entry: Entry = {
     id: uuidv4(),
     ...data,
@@ -39,13 +39,7 @@ export function updateEntry(
   id: string,
   data: Partial<Omit<Entry, "id">>,
 ): Entry | undefined {
-  if (
-    data.confidenceRating !== undefined &&
-    data.confidenceRating !== null &&
-    (data.confidenceRating < 1 || data.confidenceRating > 5)
-  ) {
-    throw new Error("Confidence rating must be between 1 and 5.");
-  }
+  validateConfidenceRating(data.confidenceRating);
   const index = entries.findIndex((entry) => entry.id === id);
   if (index === -1) return undefined;
 
@@ -64,7 +58,7 @@ export function deleteEntry(id: string): boolean {
 export function addAhaMoment(
   entryId: string,
   moment: string,
-): AhaMoment[] | undefined {
+): Entry | undefined {
   const entry = entries.find((item) => item.id === entryId);
 
   if (!entry) return undefined;
@@ -75,7 +69,7 @@ export function addAhaMoment(
   };
 
   entry.ahaMoments.push(ahaMoment);
-  return entry.ahaMoments;
+  return entry;
 }
 
 export function getAhaMoments(entryId: string): AhaMoment[] | undefined {

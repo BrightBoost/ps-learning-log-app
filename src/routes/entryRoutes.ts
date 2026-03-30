@@ -62,14 +62,14 @@ router.post("/:id/aha-moments", (req: Request, res: Response) => {
     return;
   }
 
-  const ahaMoments = addAhaMoment(req.params.id, moment);
+  const updatedEntry = addAhaMoment(req.params.id, moment);
 
-  if (!ahaMoments) {
+  if (!updatedEntry) {
     res.status(404).json({ error: "Entry not found" });
     return;
   }
 
-  res.status(201).json(ahaMoments);
+  res.status(201).json(updatedEntry);
 });
 
 // GET /entries/:id/aha-moments
@@ -81,7 +81,7 @@ router.get("/:id/aha-moments", (req: Request, res: Response) => {
     return;
   }
 
-  res.json(ahaMoments);
+  res.json({ data: ahaMoments });
 });
 
 // PUT /entries/:id

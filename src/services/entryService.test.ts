@@ -170,9 +170,9 @@ describe("Entry Service", () => {
       addAhaMoment(testEntry.id, "Jest setup clicked");
       const result = getAhaMoments(testEntry.id);
 
-      expect(result).toEqual({
-        moments: [expect.objectContaining({ moment: "Jest setup clicked" })],
-      });
+      expect(result).toEqual([
+        expect.objectContaining({ moment: "Jest setup clicked" }),
+      ]);
     });
   });
 });
